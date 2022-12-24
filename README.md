@@ -5,4 +5,4 @@
 * Performed client and server-side data sanitization and validation based on schema-based constraints and robust error-handling
 
 # Full Documentation of Functionality
-https://docs.google.com/document/d/1_4GxQgcvAmXkCCcJf2-BnKFQd3D_8LqFwKKNSK5G5H8/edit
+[Link to Documentation](https://docs.google.com/document/d/1_4GxQgcvAmXkCCcJf2-BnKFQd3D_8LqFwKKNSK5G5H8/edit)
