@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Device Dashboard</title>
+    <link rel="stylesheet" href="css/stylesheet.css">
+</head>
+
+<body>
+    <h1><img src="/img/house.png" id="company_logo"> MySmartHome</h1>
+    <h2>Device Dashboard</h2>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="./"> Home </a>
+            </li>
+            <li>
+                <a href="./about"> About </a>
+            </li>
+            <li>
+                <a href="./addadevice"> Add a Device </a>
+            </li>
+            <li>
+                <a href="./dashboard" class="active"> Dashboard: View, Control and Delete Devices </a>
+            </li>
+            <li>
+                <img src="img/devices.png">
+            </li>
+        </ul>
+    </nav>
+    <h3>Welcome to the MySmartHome Dashboard</h3>
+    <h4>View, update, and delete your devices</h4>
+    <div class="number_of_devices_display">
+        <% if (deviceList.length !=1) {%>
+            <div>
+                <h4>You are currently managing <span>
+                        <%=deviceList.length%>
+                    </span> devices within the MySmartHome system.
+                </h4>
+            </div>
+            <%} else {%>
+
+                <div>
+                    <h4>You are currently managing <span>
+                            <%=deviceList.length%>
+                        </span> device.
+                    </h4>
+                </div>
+                <%}%>
+
+    </div>
+    <table id="device_dashboard">
+        <% if (deviceList[0]) { %>
+            <% deviceList.forEach(function(device) {%>
+                <div class="dashboard_column">
+                    <div class="dashboard_image">
+                        <img src="img/<%=device.Device_Type %>.png">
+                    </div>
+                    <div class="dashboard_column_data">
+                        <h5 name="custom_name" class="custom_device_type">
+                            <%=device.Custom_Name %>
+                        </h5>
+                        <h3 name="name">
+                            <%=device.Device_Type %>
+                        </h3>
+                        <div>
+                            <form action="/display-status" method="GET">
+                                <button class="status_button" name="deviceTypeID" value=<%=device.Device_Type_ID%>>View
+                                    Status</button>
+                            </form>
+                        </div>
+
+                        <div>
+                            <div>
+                                <form action="/confirm-delete" method="POST">
+                                    <button class="delete_button" name="device_type_ID"
+                                        value="<%=device.Device_Type_ID%>,<%=device.Custom_Name%>,<%-device.Device_Type%>,<%=device.On_Off%>,<%=device.Batteries_Included%>,<%=device.Open_Closed%>,<%=device.Volume%>,<%=device.Temperature%>">Delete
+                                        Device
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <form action="/retrieve-update-record" method="POST">
+                            <button class="update_button" name="device_type_ID"
+                                value="<%=device.Device_Type_ID%>,<%=device.Custom_Name%>,<%-device.Device_Type%>,<%=device.On_Off%>,<%=device.Batteries_Included%>,<%=device.Open_Closed%>,<%=device.Volume%>,<%=device.Temperature%>">Update
+                                Device
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <%}) %>
+                    <%} else { %>
+                        <p>There are <b>0</b> devices in the system. Click <a href="addadevice">here</a> to add your
+                            first.
+                        </p>
+                        <% } %>
+    </table>
+</body>
+
+</html>

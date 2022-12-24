@@ -1,0 +1,542 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(247, 247, 247);
+    margin: 3.5em;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+h3 {
+    line-height: 2;
+    font-size: 1em;
+}
+
+h3:after {
+    content: ' ';
+    display: block;
+    border: 2px solid rgb(106, 167, 216);
+}
+
+h4 {
+    font-size: 1.3em;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+}
+
+p, nav ul li a, table td, table th, button, #confirm_delete_button, label, select option, #cancel_delete_button {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+p {
+    line-height: 1.6;
+}
+
+#company_logo {
+    width: 35px;
+}
+
+nav {
+    margin: 1.3em 0;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(7, 7, 7);
+
+}
+
+nav li {
+    float: left;
+    border-right: 0.01em solid rgb(62, 62, 62);
+
+}
+
+nav ul li a {
+    display: block;
+    color: white;
+    padding: 1em 2em;
+}
+
+nav li:last-child {
+    float: right;
+    border-right: none;
+}
+
+nav li img {
+    width: 46px;
+    padding: .3em .3em 0 0;
+
+}
+
+a {
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: rgb(39, 39, 39);
+
+}
+
+.active {
+    background-color: #1441a3;
+}
+
+.active:hover {
+    background-color: #164cc3;
+}
+
+button, #device_insertion_submit, #submit_button, #update, #confirm_delete_button {
+    background-color: #363a82;
+    border: none;
+    color: white;
+    padding: 1em 1.5em;
+    text-align: left;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+#submit_button {
+    background-color: #111;
+    margin: 2em 0 0 2.8em;
+}
+
+#submit_button:hover {
+    background-color: #333;
+}
+
+button:hover, #device_insertion_submit:hover, #update:hover, #confirm_delete_button:hover {
+    background-color: #3c42b8;
+}
+
+table tr td {
+    padding: 1.4em 2.4em 1.4em 0.05em;
+}
+
+table tr th, table tr td {
+    text-align: left;
+}
+
+form input {
+    padding: .6em;
+}
+
+input[type=text] {
+    border: 1.5px solid rgb(0, 0, 0);
+    border-radius: .2;
+}
+
+.invalid {
+    border: 2px solid red;
+}
+
+.valid {
+    border: green;
+}
+
+#update_form input {
+    margin: .6em;
+}
+
+.update_record_custom_name {
+    text-transform: capitalize;
+    color: rgb(21, 20, 20);
+    display: inline;
+}
+
+.device_status_option {
+    text-transform: capitalize;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' heigh#t='45' viewBox='0 0 35 32' width='45' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    background-position-y: 6px;
+    border: 6px solid #8f9ce4;
+    margin: 1.3em 0;
+    border-radius: 2px;
+    padding: 1rem;
+    padding-right: 3em;
+}
+
+input[type=text] {
+    text-transform: capitalize;
+}
+
+div select option {
+    padding: 10px;
+}
+
+#deviceName {
+    margin-bottom: 1.35em;
+}
+
+#cancel_delete_button, .home_button, .dashboard_button {
+    background-color: rgb(159, 42, 42);
+    margin-left: .5em;
+}
+
+#cancel_delete_button:hover, .home_button:hover, .dashboard_button:hover {
+    background-color: rgb(186, 49, 49);
+}
+
+form p {
+    font-size: 0.8em;
+}
+
+form input {
+    margin-bottom: .7em;
+}
+
+#device_status_table th, #device_dashboard th, #device_update_table th {
+    padding-right: 1.5em;
+}
+
+#device_status_list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    box-shadow: 0 7px 30px -10px rgba(133, 144, 148, 0.5);
+    padding: 3.3em;
+    width: 780px;
+    margin-bottom: 1.5em;
+}
+
+.device_status_image img {
+    max-width: 300px;
+}
+
+#batteries_included_header {
+    margin-bottom: .75em;
+}
+
+#device_status_list:hover {
+    box-shadow: 0 7px 30px -10px rgba(97, 105, 108, 0.5);
+}
+
+.device_status_column {
+    margin-left: 2em;
+}
+
+#open_closed_header {
+    padding-bottom: .8em;
+}
+
+#temperature_body, #volume_body {
+    padding: .75em 0 .9em 0;
+}
+
+.device_status_column img {
+    width: 80px;
+}
+
+.device_status_column p, .device_status_column h3 {
+    margin: 0;
+}
+
+#device_type {
+    padding: .7em 0 1em 0;
+}
+
+/* The switch - the box around the device_slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    margin: 0.2em auto;
+    width: 100px;
+    height: 50px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+
+/* The device_slider */
+.device_slider {
+    position: absolute;
+    cursor: pointer;
+    background-color: #ca2222;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-transition: .55s;
+    transition: .55s;
+}
+
+.device_slider:before {
+    position: absolute;
+    content: "";
+    left: 10px;
+    bottom: 7.8px;
+    height: 35px;
+    width: 35px;
+    background-color: rgb(255, 255, 255);
+    -webkit-transition: .55s;
+    transition: .55s;
+}
+
+input:checked+.device_slider {
+    background-color: #2ab934;
+}
+
+input:focus+.device_slider {
+    box-shadow: 0 0 1.5px #4ea7f1;
+}
+
+input:checked+.device_slider:before {
+    -webkit-transform: translateX(45px);
+    -ms-transform: translateX(45px);
+    transform: translateX(45px);
+}
+
+/* Rounded sliders */
+.device_slider.round {
+    border-radius: 34px;
+}
+
+.device_slider.round:before {
+    border-radius: 50%;
+}
+
+#custom_name {
+    margin: 0 auto;
+    border: 4px solid rgb(108, 112, 172);
+    border-radius: .1em;
+    padding: 1em;
+}
+
+#custom_name_update {
+    margin: .95em 0;
+    border: 4px solid rgb(108, 112, 172);
+    border-radius: .1em;
+    padding: 1em;
+}
+
+.custom_name_status_page {
+    text-transform: capitalize;
+    display: inline;
+    color: rgb(59, 59, 59);
+}
+
+.device_type_status_page {
+    display: inline;
+    color: rgb(158, 18, 18);
+}
+
+#add_device_parameters {
+    grid-auto-flow: column;
+    display: grid;
+}
+
+#add_device_parameters div {
+    box-shadow: 0 7px 30px -10px rgba(133, 144, 148, 0.5);
+    padding: 1.7em;
+    margin: 0 0 1em 1em;
+    display: none;
+    background-color: rgb(255, 255, 255);
+}
+
+#add_device_parameters div:hover {
+    box-shadow: 0 7px 30px -10px rgba(97, 105, 108, 0.5);
+}
+
+#add_device_parameters div:first-of-type {
+    margin-left: 0;
+}
+
+#add_device_parameters div label {
+    line-height: 1.8;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 1.3em;
+}
+
+#add_device_parameters * {
+    text-align: center;
+}
+
+#volume_range_value, #temperature_range_value {
+    position: relative;
+    display: block;
+    text-align: center;
+    font-size: 3em;
+    font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
+    color: rgb(59, 59, 59);
+    font-weight: 400;
+}
+
+.range {
+    width: 100%;
+    height: 18px;
+    -webkit-appearance: none;
+    outline: none;
+    background: rgb(21, 21, 21);
+    border-radius: 15px;
+    margin-top: 1em;
+    overflow: hidden;
+}
+
+.range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #3d6bcf;
+    cursor: pointer;
+    border: 5px solid rgb(213, 223, 236);
+    box-shadow: -407px 0 0 400px #4273b0;
+}
+
+.dashboard_column {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    float: left;
+    width: 23.9%;
+    box-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);
+    margin: 1em 0 0 1em;
+}
+
+.dashboard_column:nth-child(4n+3) {
+    margin-left: 0;
+}
+
+.dashboard_column:nth-child(4n) {
+    margin-right: 0;
+}
+
+.dashboard_column {
+    padding: 2em 2em 1.4em 2em;
+    margin-bottom: 2em;
+}
+
+.status_button, .delete_button, .update_button {
+    width: 100%;
+}
+
+#successful_delete_button {
+    margin-left: 0;
+}
+
+#dropdown_label {
+    margin-top: .3em;
+}
+
+.uppercase {
+    text-transform: uppercase;
+    display: inline;
+    color: rgb(158, 18, 18);
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.darken {
+    color: rgb(96, 21, 21);
+}
+
+.delete_button {
+    background-color: rgb(181, 28, 28);
+    margin: 1em 0;
+}
+
+.delete_button:hover {
+    background-color: rgb(206, 23, 23);
+}
+
+.delete_device_grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.delete_device_grid div {
+    margin-right: 4em;
+}
+
+.selected_deletion_device {
+    font-weight: 600;
+    text-transform: capitalize;
+    margin: .15em 0 .3em 0;
+}
+
+.update_button {
+    background-color: rgb(21, 21, 21);
+}
+
+.update_button:hover {
+    background-color: rgb(53, 53, 53);
+}
+
+#valid_submit {
+    display: none;
+}
+
+form img {
+    float: right;
+}
+
+.dashboard_image img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.device_status_column .switch {
+    margin: 1em 0;
+}
+
+.device_status_column:last-of-type .switch:last-of-type {
+    margin: 0;
+}
+
+.device_status_column #temperature_slider {
+    margin-bottom: 1.3em;
+}
+
+.device_status_column #temperature_range_value {
+    margin-top: .2em;
+}
+
+.number_of_devices_display span {
+    color: rgb(201, 32, 32);
+}
+
+h5 {
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    letter-spacing: 1.2px;
+    color: rgb(102, 102, 102);
+}
+
+.custom_device_type {
+    margin-top: .5em;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+.number_of_devices_display div {
+    box-shadow: 0 7px 30px -10px rgba(133, 144, 148, 0.5);
+    padding: 2em;
+    margin-top: 1em;
+}
+
+.number_of_devices_display div:hover {
+    box-shadow: 0 7px 30px -10px rgba(97, 105, 108, 0.5);
+}
+
+.number_of_devices_display h4 {
+    font-weight: 600;
+    font-size: 1.1em;
+}

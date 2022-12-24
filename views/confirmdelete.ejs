@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Delete a Device</title>
+    <link rel="stylesheet" href="css/stylesheet.css">
+</head>
+
+<body>
+    <h1><img src="/img/house.png" id="company_logo"> MySmartHome</h1>
+    <h2>Delete a Device</h2>
+    <nav>
+        <ul>
+            <li>
+                <a href="./"> Home </a>
+            </li>
+            <li>
+                <a href="./about"> About </a>
+            </li>
+            <li>
+                <a href="./addadevice"> Add a Device </a>
+            </li>
+            <li>
+                <a href="./dashboard" class="active"> Dashboard: View, Control and Delete Devices </a>
+            </li>
+        </ul>
+    </nav>
+
+    <h3>Delete a Device from the MySmartHome Database</h3>
+
+    <div class="delete_device_grid">
+        <div>
+            <form action="/delete-result" method="POST" id="delete_device_form">
+                <h5>The device selected to be deleted:</h5>
+                <h4 class="selected_deletion_device">
+                    <%=deviceInfo[0].Custom_Name%>
+                        <%=deviceInfo[0].Device_Type%>
+                </h4><br>
+                <h5 id="valid_submit">The <span class="uppercase">
+                        <%=deviceInfo[0].Custom_Name%>
+                            <%=deviceInfo[0].Device_Type%>
+                    </span> has been successfully deleted from the database.</h5><br>
+                <input type="text" name="device_type_ID" value="<%=deviceInfo[0].Device_Type_ID%>,<%=deviceInfo[0].Custom_Name%>,<%-deviceInfo[0].Device_Type%>,<%=deviceInfo[0].On_Off%>,<%=deviceInfo[0].Batteries_Included%>,<%=deviceInfo[0].Open_Closed%>,<%=deviceInfo[0].Volume%>,<%=deviceInfo[0].Temperature%>" hidden>
+                    <input id="confirm_delete_button" type="submit" onclick="confirmDelete(event)" value="Delete">
+                    <a href="/dashboard"><button type="button" class="dashboard_button">Back to Dashboard</button></a>
+            </form>
+        </div>
+        <div>
+            <form action="/confirm-delete" method="POST" id="delete_device_selection_form">
+                <div>
+                    <label for="name">Select a Device to Delete</label><br>
+                    <h5 id="dropdown_label">Below are the devices currently in the database:</h5>
+                    <select name="device_type_ID" onchange="this.form.submit()">
+                        <option value="" hidden>Select a Device</option>
+                        <% deviceList.forEach(function(device) {%>
+                            <option class="device_status_option" name="device_type_ID"
+                                value="<%=device.Device_Type_ID%>,<%=device.Custom_Name%>,<%-device.Device_Type%>,<%=device.On_Off%>,<%=device.Batteries_Included%>,<%=device.Open_Closed%>,<%=device.Volume%>,<%=device.Temperature%>">
+                                <%=device.Custom_Name%>
+                                    <%=device.Device_Type%>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        let validSubmit;
+
+        function confirmDelete(e) {
+            validSubmit = true;
+            if (!confirm('Confirm device deletion?')) {
+                e.preventDefault();
+                validSubmit = false;
+            }
+            valid_submit_text = document.getElementById("valid_submit");
+            if (validSubmit) {
+                valid_submit_text.style.display = "block";
+            }
+            else {
+                valid_submit_text.style.display = "none";
+            }
+        }
+
+        function preventSubmit(e) {
+            e.preventDefault();
+        }
+    </script>
+
+</body>
+
+</html>

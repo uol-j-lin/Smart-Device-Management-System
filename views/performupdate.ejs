@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Perform Update</title>
+    <link rel="stylesheet" href="css/stylesheet.css">
+</head>
+
+<body>
+    <h1><img src="/img/house.png" id="company_logo"> MySmartHome</h1>
+    <h2>Perform Update</h2>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="./"> Home </a>
+            </li>
+            <li>
+                <a href="./about"> About </a>
+            </li>
+            <li>
+                <a href="./addadevice"> Add a Device </a>
+            </li>
+            <li>
+                <a href="./dashboard" class="active"> Dashboard: View, Control and Delete Devices </a>
+            </li>
+        </ul>
+    </nav>
+
+    <h3>Update a Device in the MySmartHome Database</h3>
+
+    <form action="/retrieve-update-record" method="POST" id="update_device_form">
+        <div>
+            <label for="name">Select a Device to Update</label><br>
+            <h5 id="dropdown_label">Below are the devices currently in the database:</h5>
+            <select name="device_type_ID" onchange="this.form.submit()">
+                <option value="" hidden>Select a Device</option>
+                <% deviceList.forEach(function(device) {%>
+                    <option class="device_status_option" name="device_type_ID"
+                        value="<%=device.Device_Type_ID%>,<%=device.Custom_Name%>,<%-device.Device_Type%>,<%=device.On_Off%>,<%=device.Batteries_Included%>,<%=device.Open_Closed%>,<%=device.Volume%>,<%=device.Temperature%>">
+                        <%=device.Custom_Name%>
+                            <%=device.Device_Type%>
+                    </option>
+                    <% }) %>
+            </select>
+        </div>
+    </form>
+
+    <h4>Customize a range of settings for the <b>
+            <div class="update_record_custom_name">
+                <%=updateRecord[0].Custom_Name%>
+            </div>
+            <%=updateRecord[0].Device_Type%>
+        </b> to suit your personal needs<br><br></h4>
+    <h5>Your current settings are displayed in the form below:</h5><br>
+
+    <form action="/update-result" method="POST" id="device_update_form" onsubmit="disable_hidden_fields()">
+        <input type="text" id="device_type" name="device_type" value="<%=updateRecord[0].Device_Type%>" hidden>
+        <input type="text" name="device_type_ID" value="<%=updateRecord[0].Device_Type_ID%>" hidden>
+        <div id="device_status_list">
+            <div class="device_status_image">
+                <img src="img/<%=updateRecord[0].Device_Type %>.png">
+                <input type="submit" id="submit_button" value="Submit">
+            </div>
+            <div>
+                <% updateRecord.forEach(function(device) {%>
+                    <div class="device_status_column">
+                        <h4>Custom Name</h4>
+                        <label id="custom_name_label">
+                            <input type="text" id="custom_name_update" name="custom_name"
+                                value="<%=updateRecord[0].Custom_Name%>">
+                        </label>
+                        <input id="custom_name_field" type="text" value="" style="display: none" hidden>
+                        <p id="custom_name_status"></p>
+                    </div>
+                    <input name="custom_name_old" value="<%=updateRecord[0].Custom_Name%>" hidden>
+                    <% if(validOnOff) {%>
+                        <div class="device_status_column">
+                            <h4 id="on_off_header">On/Off</h4>
+                            <label class="switch" id="on_off_switch">
+                                <% if (deviceOn) { %>
+                                    <input name="on_off" value="1" type="checkbox" id="on_off_checkbox" checked>
+                                    <%} else { %>
+                                        <input name="on_off" value="1" type="checkbox" id="on_off_checkbox">
+                                        <% } %>
+                                            <span class="device_slider round"></span>
+                            </label>
+                            <input id="on_off_hidden" type="text" name="on_off" value="0" hidden>
+                        </div>
+                        <%}%>
+                            <% if(validTemperature){%>
+                                <div class="device_status_column">
+                                    <h4 id="temperature_header">Temperature (°C)</h4>
+                                    <span name="temperature" id="temperature_range_value">
+                                        <%=updateRecord[0].Temperature%>
+                                    </span>
+                                    <input id="temperature_slider" class="range" type="range" name=""
+                                        value="<%=updateRecord[0].Temperature%>" min="0" max="300"
+                                        onChange="temperatureRangeSlide(this.value)"
+                                        onmousemove="temperatureRangeSlide(this.value)"></input>
+                                    <input id="temperature" type="text" name="temperature" value="" hidden>
+                                    <p id="temperature_status"></p>
+                                </div>
+                                <%}%>
+                                    <% if(validVolume) {%>
+                                        <div class="device_status_column">
+                                            <h4 id="volume_header">Volume (%)</h4>
+                                            <span name="volume" id="volume_range_value">
+                                                <%=updateRecord[0].Volume%>
+                                            </span>
+                                            <input id="volume_slider" class="range" type="range" name=""
+                                                value="<%=updateRecord[0].Volume%>" min="0" max="100"
+                                                onChange="volumeRangeSlide(this.value)"
+                                                onmousemove="volumeRangeSlide(this.value)"></input>
+                                            <input id="volume" type="text" name="volume" value="" hidden>
+                                            <p id="volume_status"></p>
+                                        </div>
+                                        <%}%>
+                                            <% if(validBatteriesIncluded) {%>
+                                                <div class="device_status_column">
+                                                    <h4 id="batteries_included_header">Batteries Included/Excluded</h4>
+                                                    <label class="switch" id="batteries_included_switch">
+                                                        <% if (deviceBatteries) { %>
+                                                            <input type="checkbox" id="batteries_included_checkbox"
+                                                                name="batteries_included" value="1" checked>
+                                                            <%} else { %>
+                                                                <input name="batteries_included" value="1"
+                                                                    type="checkbox" id="batteries_included_checkbox">
+                                                                <% } %>
+                                                                    <span class="device_slider round"></span>
+                                                    </label>
+                                                    <input id="batteries_included_hidden" type="text"
+                                                        name="batteries_included" value="0" hidden>
+                                                </div>
+                                                <%}%>
+                                                    <% if(validOpenClosed) {%>
+                                                        <div class="device_status_column">
+                                                            <h4 id="open_closed_header">Open/Closed</h4>
+                                                            <label class="switch" id="open_closed_switch">
+                                                                <% if (deviceOpen) { %>
+                                                                    <input type="checkbox" id="open_closed_checkbox"
+                                                                        name="open_closed" value="1" checked>
+                                                                    <%} else { %>
+                                                                        <input type="checkbox" name="open_closed"
+                                                                            value="1" id="open_closed_checkbox">
+                                                                        <% } %>
+                                                                            <span class="device_slider round"></span>
+                                                            </label>
+                                                            <input id="open_closed_hidden" type="text"
+                                                                name="open_closed" value="0" hidden>
+                                                        </div>
+                                                        <%}%>
+                                                            <%}) %>
+            </div>
+        </div>
+    </form>
+    <h5 id="valid_submit">The <div class="uppercase">
+            <%=updateRecord[0].Custom_Name%>
+                <%=updateRecord[0].Device_Type%>
+        </div> has been successfully updated to the database.</h5><br>
+
+    <a href="/dashboard"><button>Go Back</button></a>
+    <a href="/"><button class="home_button">Home</button></a>
+</body>
+<script>
+
+    function disable_hidden_fields() {
+        if (document.getElementById("on_off_checkbox") != null) {
+            if (document.getElementById("on_off_checkbox").checked) {
+                document.getElementById("on_off_hidden").disabled = true;
+            }
+        }
+
+        if (document.getElementById("batteries_included_checkbox") != null) {
+            if (document.getElementById("batteries_included_checkbox").checked) {
+                document.getElementById("batteries_included_hidden").disabled = true;
+            }
+        }
+
+        if (document.getElementById("open_closed_checkbox") != null) {
+            if (document.getElementById("open_closed_checkbox").checked) {
+                document.getElementById("open_closed_hidden").disabled = true;
+            }
+        }
+    };
+
+    function temperatureRangeSlide(value) {
+        document.getElementById("temperature_range_value").innerHTML = value;
+        document.getElementById("temperature").value = value;
+    }
+
+    function volumeRangeSlide(value) {
+        document.getElementById("volume_range_value").innerHTML = value;
+        document.getElementById("volume").value = value;
+    }
+
+    let temperature_slider = document.getElementById("temperature_slider");
+
+    if (document.getElementById("device_type").value === "Stainless Steel Kettle") {
+        temperature_slider.min = 20;
+        temperature_slider.max = 100;
+    }
+    if (document.getElementById("device_type").value === "AC Thermostat") {
+        temperature_slider.min = 10;
+        temperature_slider.max = 30;
+    }
+    if (document.getElementById("device_type").value === "Microwave") {
+        temperature_slider.min = 60;
+        temperature_slider.max = 100;
+    }
+    if (document.getElementById("device_type").value === "Clothing Iron") {
+        temperature_slider.min = 120;
+        temperature_slider.max = 220;
+    }
+    if (document.getElementById("device_type").value === "Oven") {
+        temperature_slider.min = 150;
+        temperature_slider.max = 200;
+    }
+    if (document.getElementById("device_type").value === "Refrigerator") {
+        temperature_slider.min = 1;
+        temperature_slider.max = 5;
+    }
+    if (document.getElementById("device_type").value === "Rice Cooker") {
+        temperature_slider.min = 60;
+        temperature_slider.max = 100;
+    }
+    if (document.getElementById("device_type").value === "Food Dehydrator") {
+        temperature_slider.min = 20;
+        temperature_slider.max = 80;
+    }
+    if (document.getElementById("device_type").value === "Pressure Cooker") {
+        temperature_slider.min = 80;
+        temperature_slider.max = 120;
+    }
+    if (document.getElementById("device_type").value === "Washing Machine") {
+        temperature_slider.min = 10;
+        temperature_slider.max = 50;
+    }
+    if (document.getElementById("device_type").value === "Water Heater") {
+        temperature_slider.min = 40;
+        temperature_slider.max = 60;
+    }
+
+    const submit_button = document.getElementById("submit_button");
+
+    let validSubmit;
+
+    submit_button.addEventListener('click', function (event) {
+
+        validSubmit = true;
+
+        let customName = document.getElementById("custom_name_update").value;
+
+        validCustomNameRegex = /^[a-zA-Z0-9_]+([a-zA-Z0-9_]+)*$/.test(customName);
+
+        if (!validCustomNameRegex || customName.length < 5 || customName.length > 16) {
+            document.getElementById("custom_name_status").innerHTML = "Enter a custom name (5-16 chars.) with no special symbols/spaces."
+            event.preventDefault();
+            validSubmit = false;
+        }
+        else {
+            if (document.getElementById("custom_name_status").innerHTML == "Enter a custom name (5-16 chars.) with no special symbols/spaces.") {
+                document.getElementById("custom_name_status").innerHTML = "You have entered a valid custom name.";
+            }
+        }
+
+        if (document.getElementById("temperature_header") != null) {
+            if (document.getElementById("temperature_header").innerHTML == "Temperature (°C)") {
+                if (document.getElementById("temperature").value === "") {
+                    event.preventDefault();
+                    validSubmit = false;
+                    document.getElementById("temperature_status").innerHTML = "Select a valid temperature."
+                }
+                else {
+                    if (document.getElementById("temperature_status").innerHTML == "Select a valid temperature.") {
+                        document.getElementById("temperature_status").innerHTML = "You have selected a valid temperature.";
+                    }
+                }
+            }
+        }
+
+        if (document.getElementById("volume_header") != null) {
+            if (document.getElementById("volume_header").innerHTML == "Volume (%)") {
+                if (document.getElementById("volume").value === "") {
+                    event.preventDefault();
+                    validSubmit = false;
+                    document.getElementById("volume_status").innerHTML = "Select a valid volume."
+                }
+                else {
+                    if (document.getElementById("volume_status").innerHTML == "Select a valid volume.") {
+                        document.getElementById("volume_status").innerHTML = "You have selected a valid volume.";
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+</html>

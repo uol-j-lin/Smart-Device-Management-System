@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Device Status</title>
+    <link rel="stylesheet" href="css/stylesheet.css">
+</head>
+
+<body>
+    <h1><img src="/img/house.png" id="company_logo"> MySmartHome</h1>
+    <h2>Device Status</h2>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="./"> Home </a>
+            </li>
+            <li>
+                <a href="./about"> About </a>
+            </li>
+            <li>
+                <a href="./addadevice"> Add a Device </a>
+            </li>
+            <li>
+                <a href="./dashboard" class="active"> Dashboard: View, Control and Delete Devices </a>
+            </li>
+        </ul>
+    </nav>
+    <h3>
+        <div class="custom_name_status_page">
+            <%=deviceStatus[0].Custom_Name %>
+        </div>
+        <div class="device_type_status_page">
+            <%=deviceStatus[0].Device_Type %>
+        </div> Device Status Page
+    </h3>
+
+    <form action="/display-status" method="GET" id="view_device_form">
+        <div>
+            <label for="name">Select a Device to View its Status</label><br>
+            <select name="deviceTypeID" onchange="this.form.submit()">
+                <option value="" hidden>Select a Device</option>
+                <% deviceList.forEach(function(device) {%>
+                    <option class="device_status_option" name="deviceTypeID" value=<%=device.Device_Type_ID%>>
+                        <%=device.Custom_Name%>
+                            <%=device.Device_Type%>
+                    </option>
+                    <% }) %>
+            </select>
+        </div>
+    </form>
+
+    <div id="device_status_list">
+
+        <div class="device_status_image">
+            <img src="img/<%=deviceStatus[0].Device_Type %>.png">
+        </div>
+        <div>
+            <% deviceStatus.forEach(function(device) {%>
+
+                <% if(validOnOff) {%>
+                    <div class="device_status_column">
+                        <h4 id="on_off_header">On/Off</h4>
+                        <p>
+                            <% if (deviceOn) { %>
+                                <img src="/img/switch-on.png">
+                                <%} else { %>
+                                    <img src="/img/switch-off.png">
+                                    <% } %>
+                        </p>
+                    </div>
+                    <%}%>
+
+                        <% if(validTemperature){%>
+                            <div class="device_status_column">
+                                <h4 id="temperature_header">Temperature | <%= device.Temperature%>°C
+                                </h4>
+                                <div id="temperature_body">
+                                    <img src="/img/thermometer.png">
+                                </div>
+                            </div>
+                            <%}%>
+                                <% if(validVolume) {%>
+                                    <div class="device_status_column">
+                                        <h4 id="volume_header">Volume | <%=device.Volume%>%</h4>
+                                        <div id="volume_body">
+                                            <img src="img/volume.png">
+                                        </div>
+                                    </div>
+                                    <%}%>
+
+                                        <% if(validBatteriesIncluded) {%>
+                                            <div class="device_status_column">
+                                                <h4 id="batteries_included_header">Batteries Included/Excluded</h4>
+                                                <% if (deviceBatteries) { %>
+                                                    <img src="/img/high-battery-level.png">
+                                                    <%} else { %>
+                                                        <img src="/img/low-battery-level.png">
+                                                        <% } %>
+                                            </div>
+                                            <%}%>
+
+                                                <% if(validOpenClosed) {%>
+                                                    <div class="device_status_column">
+                                                        <h4 id="open_closed_header">Open/Closed</h4>
+                                                        <p>
+                                                            <% if (deviceOpen) { %>
+                                                                <img src="/img/unlocked.png">
+                                                                <%} else { %>
+                                                                    <img src="/img/locked.png">
+                                                                    <% } %>
+                                                        </p>
+                                                    </div>
+                                                    <%}%>
+
+
+                                                        <%}) %>
+        </div>
+    </div>
+    <a href="/dashboard"><button>Go Back</button></a>
+    <a href="/"><button class="home_button">Home</button></a>
+</body>
+
+</html>

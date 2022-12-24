@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add a Device</title>
+    <link rel="stylesheet" href="css/stylesheet.css">
+</head>
+
+<body>
+    <h1><img src="/img/house.png" id="company_logo"> MySmartHome</h1>
+    <h2>Add a Device</h2>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="./"> Home </a>
+            </li>
+            <li>
+                <a href="./about"> About </a>
+            </li>
+            <li>
+                <a href="./addadevice" class="active"> Add a Device </a>
+            </li>
+            <li>
+                <a href="./dashboard"> Dashboard: View, Control and Delete Devices </a>
+            </li>
+        </ul>
+    </nav>
+
+    <h3>Add a Device into the MySmartHome Database</h3>
+    <h4>Select one of MySmartHome's customizable devices</h4><br>
+
+    <iframe name="redirectionFrame" id="redirectionFrame" style="display: none;"></iframe>
+
+    <form action="/add-result" method="POST" id="add_device_form" target="redirectionFrame">
+        <div>
+            <label for=" name">Add a Device to Manage</label><br>
+            <h5 id="dropdown_label">Below are the 20+ predefined device types that are supported:</h5>
+            <select id="device_type_menu_options" name="device_type">
+                <option value="" hidden>Select a Device</option>
+                <option value="Alarm Clock">Alarm Clock </option>
+                <option value="AC Thermostat">AC Thermostat</option>
+                <option value="Digital Camera">Digital Camera</option>
+                <option value="Electric Razor">Electric Razor</option>
+                <option value="Stainless Steel Kettle">Stainless Steel Kettle</option>
+                <option value="Game Controller">Game Controller</option>
+                <option value="Rechargeable CD Player">Rechargeable CD Player</option>
+                <option value="Security Alarm">Security Alarm</option>
+                <option value="Microwave">Microwave</option>
+                <option value="Clothing Iron">Clothing Iron</option>
+                <option value="Wireless Mouse">Wireless Mouse</option>
+                <option value="Oven">Oven</option>
+                <option value="Refrigerator">Refrigerator</option>
+                <option value="Rice Cooker">Rice Cooker</option>
+                <option value="Pressure Cooker">Pressure Cooker</option>
+                <option value="Speakers">Speakers</option>
+                <option value="Food Dehydrator">Food Dehydrator</option>
+                <option value="Washing Machine">Washing Machine</option>
+                <option value="CCTV Surveillance Camera">CCTV Surveillance Camera</option>
+                <option value="Water Heater">Water Heater</option>
+                <option value="Cordless Vacuum Cleaner">Cordless Vacuum Cleaner</option>
+            </select>
+        </div>
+
+        <h4 id="initial_state_header" style="display: none">Set the device's initial state</h4><br><br>
+        <div id="add_device_parameters">
+            <div id="custom_name_column" style="display: none">
+                <label id="custom_name_label" for="custom_name"></label><br><br><br>
+                <input type="text" id="custom_name" name="custom_name" value="">
+                <input id="custom_name_field" type="text" value="" style="display: none" hidden>
+                <p id="custom_name_status"></p>
+            </div>
+            <div id="on_off_column" style="display: none">
+                <label id="on_off_label" for="on_off"></label><br><br><br>
+                <label class="switch" id="on_off_switch" style="display: none">
+                    <input type="checkbox" id="on_off_checkbox">
+                    <span class="device_slider round"></span>
+                </label>
+                <input id="on_off" type="text" name="on_off" value="" style="display: none" hidden>
+            </div>
+            <div id="temperature_column" style="display: none">
+                <label id="temperature_label" for="temperature"></label><br><br>
+                <span name="temperature" id="temperature_range_value">0</span>
+                <input id="temperature_slider" class="range" type="range" name="" value="" min="0" max="300"
+                    onChange="temperatureRangeSlide(this.value)" onmousemove="temperatureRangeSlide(this.value)">
+                <input id="temperature" type="text" name="temperature" value="" style="display: none" hidden>
+                <p id="temperature_status"></p>
+            </div>
+            <div id="volume_column" style="display: none">
+                <label id="volume_label" for="volume"></label><br><br>
+                <span name="volume" id="volume_range_value">0</span>
+                <input id="volume_slider" class="range" type="range" name="" value="" min="0" max="100"
+                    onChange="volumeRangeSlide(this.value)" onmousemove="volumeRangeSlide(this.value)">
+                <input id="volume" type="text" name="volume" value="" style="display: none" hidden>
+                <p id="volume_status"></p>
+            </div>
+            <div id="batteries_included_column" style="display: none">
+                <label id="batteries_included_label" for="batteries_included"></label><br><br><br>
+                <label class="switch" id="batteries_included_switch" style="display: none">
+                    <input type="checkbox" id="batteries_included_checkbox">
+                    <span class="device_slider round"></span>
+                </label>
+                <input id="batteries_included" type="text" name="batteries_included" value="" style="display: none"
+                    hidden>
+            </div>
+            <div id="open_closed_column" style="display: none">
+                <label id="open_closed_label" for="open_closed_label"></label><br><br><br>
+                <label class="switch" id="open_closed_switch" style="display: none">
+                    <input type="checkbox" id="open_closed_checkbox">
+                    <span class="device_slider round"></span>
+                </label>
+                <input id="open_closed" type="text" name="open_closed" value="" style="display: none" hidden>
+            </div>
+        </div>
+
+        <h5 id="valid_submit">The device has been successfully added to the database.</h5><br>
+        <input type="submit" id="device_insertion_submit" value="Submit" style="display: none">
+    </form>
+
+    <script>
+
+        let device_type_menu_options = document.getElementById("device_type_menu_options");
+
+        // Retrieve text input fields from the DOM
+
+        let custom_name = document.getElementById("custom_name");
+        let on_off_switch = document.getElementById("on_off_switch");
+        let temperature_slider = document.getElementById("temperature_slider");
+        let volume_slider = document.getElementById("volume_slider");
+        let batteries_included_switch = document.getElementById("batteries_included_switch");
+        let open_closed_switch = document.getElementById("open_closed_switch");
+
+        // Retrieve labels for text input fields from the DOM
+
+        let custom_name_label = document.getElementById("custom_name_label");
+        let on_off_field_label = document.getElementById("on_off_label");
+        let temperature_field_label = document.getElementById("temperature_label");
+        let volume_field_label = document.getElementById("volume_label");
+        let batteries_included_field_label = document.getElementById("batteries_included_label");
+        let open_closed_field_label = document.getElementById("open_closed_label");
+
+        // Retrieve columns for fields
+
+        let custom_name_column = document.getElementById("custom_name_column");
+        let on_off_column = document.getElementById("on_off_column");
+        let temperature_column = document.getElementById("temperature_column");
+        let volume_column = document.getElementById("volume_column");
+        let batteries_included_column = document.getElementById("batteries_included_column");
+        let open_closed_column = document.getElementById("open_closed_column");
+
+        // Toggle visibility of 'Custom Name' field
+
+        function show_custom_name_field() {
+            custom_name_label.innerHTML = "Custom Name";
+            custom_name.style.display = "block";
+            custom_name_column.style.display = "block";
+        }
+
+        function hide_custom_name_field() {
+            custom_name_label.innerHTML = "Custom Name: N/A";
+            custom_name.style.display = "none";
+            custom_name_column.style.display = "none";
+        }
+
+        // Toggle visibility of 'On/Off' field
+
+        function show_on_off_field() {
+            on_off_field_label.innerHTML = "On/Off";
+            on_off_switch.style.display = "block";
+            on_off_column.style.display = "block";
+        }
+
+        function hide_on_off_field() {
+            on_off_field_label.innerHTML = "On/Off: N/A";
+            on_off_switch.style.display = "none";
+            on_off_column.style.display = "none";
+        }
+
+        // Toggle visibility of 'Temperature' field
+
+        function show_temperature_field() {
+            temperature_field_label.innerHTML = "Temperature (°C)";
+            temperature_slider.style.display = "block";
+            temperature_column.style.display = "block";
+        }
+
+        function hide_temperature_field() {
+            temperature_field_label.innerHTML = "Temperature: N/A";
+            temperature_slider.style.display = "none";
+            temperature_column.style.display = "none";
+        }
+
+        /* Toggle visibility of 'Volume' field */
+
+        function show_volume_field() {
+            volume_field_label.innerHTML = "Volume (%)";
+            volume_slider.style.display = "block";
+            volume_column.style.display = "block";
+        }
+
+        function hide_volume_field() {
+            volume_field_label.innerHTML = "Volume: N/A";
+            volume_slider.style.display = "none";
+            volume_column.style.display = "none";
+        }
+
+        // Toggle visibility of 'Batteries Included/Excluded' field
+
+        function show_batteries_included_field() {
+            batteries_included_field_label.innerHTML = "Batteries Included/Excluded";
+            batteries_included_switch.style.display = "block";
+            batteries_included_column.style.display = "block";
+        }
+
+        function hide_batteries_included_field() {
+            batteries_included_field_label.innerHTML = "Batteries Included/Excluded: N/A";
+            batteries_included_switch.style.display = "none";
+            batteries_included_column.style.display = "none";
+        }
+
+        // Toggle visibility of 'Open/Closed' field
+
+        function show_open_closed_field() {
+            open_closed_field_label.innerHTML = "Open/Closed";
+            open_closed_switch.style.display = "block";
+            open_closed_column.style.display = "block";
+        }
+
+        function hide_open_closed_field() {
+            open_closed_field_label.innerHTML = "Open/Closed: N/A";
+            open_closed_switch.style.display = "none";
+            open_closed_column.style.display = "none";
+        }
+
+        // Limit visibility of device fields to those applicable to the device type selected
+
+        device_type_menu_options.addEventListener("change", function () {
+            document.getElementById("initial_state_header").style.display = "inline";
+            document.getElementById("device_insertion_submit").style.display = "inline";
+            let addDeviceLayout = document.getElementById("add_device_parameters").getElementsByTagName('div');
+            for (var i = 0; i < addDeviceLayout.length; ++i) {
+                addDeviceLayout[i].style.display = "inline";
+            }
+            if (device_type_menu_options.value === "Alarm Clock") {
+                hide_temperature_field();
+                show_volume_field();
+                show_batteries_included_field();
+                hide_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "AC Thermostat") {
+                show_temperature_field();
+                hide_volume_field();
+                show_batteries_included_field();
+                show_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Digital Camera") {
+                hide_temperature_field();
+                show_volume_field();
+                show_batteries_included_field();
+                hide_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Electric Razor") {
+                hide_temperature_field();
+                hide_volume_field();
+                show_batteries_included_field();
+                show_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Stainless Steel Kettle") {
+                show_temperature_field();
+                hide_volume_field();
+                hide_batteries_included_field();
+                show_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Game Controller") {
+                hide_temperature_field();
+                hide_volume_field();
+                show_batteries_included_field();
+                show_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Rechargeable CD Player") {
+                hide_temperature_field();
+                show_volume_field();
+                hide_batteries_included_field();
+                show_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Security Alarm") {
+                hide_temperature_field();
+                show_volume_field();
+                show_batteries_included_field();
+                show_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Microwave") {
+                show_temperature_field();
+                hide_volume_field();
+                hide_batteries_included_field();
+                show_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Clothing Iron") {
+                show_temperature_field();
+                hide_volume_field();
+                hide_batteries_included_field();
+                show_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Wireless Mouse") {
+                hide_temperature_field();
+                hide_volume_field();
+                show_batteries_included_field();
+                show_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Oven") {
+                show_temperature_field();
+                hide_volume_field();
+                hide_batteries_included_field();
+                show_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Refrigerator") {
+                show_temperature_field();
+                hide_volume_field();
+                hide_batteries_included_field();
+                show_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Rice Cooker") {
+                show_temperature_field();
+                hide_volume_field();
+                hide_batteries_included_field();
+                show_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Pressure Cooker") {
+                show_temperature_field();
+                hide_volume_field();
+                hide_batteries_included_field();
+                show_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Speakers") {
+                hide_temperature_field();
+                show_volume_field();
+                show_batteries_included_field();
+                hide_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Food Dehydrator") {
+                show_temperature_field();
+                hide_volume_field();
+                hide_batteries_included_field();
+                show_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Washing Machine") {
+                show_temperature_field();
+                hide_volume_field();
+                hide_batteries_included_field();
+                show_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "CCTV Surveillance Camera") {
+                hide_temperature_field();
+                show_volume_field();
+                show_batteries_included_field();
+                hide_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Water Heater") {
+                show_temperature_field();
+                hide_volume_field();
+                hide_batteries_included_field();
+                show_open_closed_field();
+            }
+            else if (device_type_menu_options.value === "Cordless Vacuum Cleaner") {
+                hide_temperature_field();
+                hide_volume_field();
+                show_batteries_included_field();
+                show_open_closed_field();
+            }
+
+            // Custom Name and On/Off fields are always displayed since they must be NOT NULL parameters
+
+            show_custom_name_field();
+            show_on_off_field();
+
+            if (device_type_menu_options.value === "Stainless Steel Kettle") {
+                temperature_slider.min = 20;
+                temperature_slider.max = 100;
+            }
+            if (device_type_menu_options.value === "AC Thermostat") {
+                temperature_slider.min = 10;
+                temperature_slider.max = 30;
+            }
+            if (device_type_menu_options.value === "Microwave") {
+                temperature_slider.min = 60;
+                temperature_slider.max = 100;
+            }
+            if (device_type_menu_options.value === "Clothing Iron") {
+                temperature_slider.min = 120;
+                temperature_slider.max = 220;
+            }
+            if (device_type_menu_options.value === "Oven") {
+                temperature_slider.min = 150;
+                temperature_slider.max = 200;
+            }
+            if (device_type_menu_options.value === "Refrigerator") {
+                temperature_slider.min = 1;
+                temperature_slider.max = 5;
+            }
+            if (device_type_menu_options.value === "Rice Cooker") {
+                temperature_slider.min = 60;
+                temperature_slider.max = 100;
+            }
+            if (device_type_menu_options.value === "Food Dehydrator") {
+                temperature_slider.min = 20;
+                temperature_slider.max = 80;
+            }
+            if (device_type_menu_options.value === "Pressure Cooker") {
+                temperature_slider.min = 80;
+                temperature_slider.max = 120;
+            }
+            if (device_type_menu_options.value === "Washing Machine") {
+                temperature_slider.min = 10;
+                temperature_slider.max = 50;
+            }
+            if (device_type_menu_options.value === "Water Heater") {
+                temperature_slider.min = 40;
+                temperature_slider.max = 60;
+            }
+        });
+
+        function temperatureRangeSlide(value) {
+            document.getElementById("temperature_range_value").innerHTML = value;
+            document.getElementById("temperature").value = value;
+        }
+
+        function volumeRangeSlide(value) {
+            document.getElementById("volume_range_value").innerHTML = value;
+            document.getElementById("volume").value = value;
+        }
+
+        // Validate form input fields
+
+        let add_device_form = document.getElementById("add_device_form");
+        let isValid = true;
+
+        add_device_form.addEventListener('submit', function (e) {
+
+            isValid = true;
+
+            let customName = document.getElementById("custom_name").value;
+
+            validCustomNameRegex = /^[a-zA-Z0-9_]+([a-zA-Z0-9_]+)*$/.test(customName);
+
+            if (!validCustomNameRegex || customName.length < 5 || customName.length > 16) {
+                document.getElementById("custom_name_status").innerHTML = "Enter a custom name (5-16 chars.) with no special symbols/spaces."
+                isValid = false;
+            }
+            else {
+                if (document.getElementById("custom_name_status").innerHTML == "Enter a custom name (5-16 chars.) with no special symbols/spaces.") {
+                    document.getElementById("custom_name_status").innerHTML = "You have entered a valid custom name.";
+                }
+            }
+
+            if (temperature_field_label.innerHTML === "Temperature (°C)") {
+                if (document.getElementById("temperature").value === "") {
+                    isValid = false;
+                    document.getElementById("temperature_status").innerHTML = "Select a valid temperature."
+                }
+                else {
+                    if (document.getElementById("temperature_status").innerHTML == "Select a valid temperature.") {
+                        document.getElementById("temperature_status").innerHTML = "You have selected a valid temperature.";
+                    }
+                }
+            }
+
+            if (volume_field_label.innerHTML === "Volume (%)") {
+                if (document.getElementById("volume").value === "") {
+                    isValid = false;
+                    document.getElementById("volume_status").innerHTML = "Select a valid volume."
+                }
+                else {
+                    if (document.getElementById("volume_status").innerHTML = "Select a valid volume.") {
+                        document.getElementById("volume_status").innerHTML = "You have selected a valid volume.";
+                    }
+                }
+            }
+
+            let on_off_checkbox = document.getElementById("on_off_checkbox");
+            let on_off = document.getElementById("on_off");
+            if (on_off_field_label.innerHTML == "On/Off") {
+                if (on_off_checkbox.checked) {
+                    on_off.value = "1";
+                } else {
+                    on_off.value = "0";
+                }
+            }
+
+            let batteries_included_checkbox = document.getElementById("batteries_included_checkbox");
+            let batteries_included = document.getElementById("batteries_included");
+            if (batteries_included_field_label.innerHTML == "Batteries Included/Excluded") {
+                if (batteries_included_checkbox.checked) {
+                    batteries_included.value = "1";
+                } else {
+                    batteries_included.value = "0";
+                }
+            }
+
+            let open_closed_checkbox = document.getElementById("open_closed_checkbox");
+            let open_closed = document.getElementById("open_closed");
+            if (open_closed_field_label.innerHTML == "Open/Closed") {
+                if (open_closed_checkbox.checked) {
+                    open_closed.value = "1";
+                } else {
+                    open_closed.value = "0";
+                }
+            }
+
+            valid_submit_text = document.getElementById("valid_submit");
+            valid_submit_text.style.display = "block";
+
+            if (!isValid) {
+                e.preventDefault();
+                valid_submit_text.style.display = "none";
+            }
+            else {
+                valid_submit_text.style.display = "block";
+            }
+        });
+    </script>
+
+</body>
+
+</html>
